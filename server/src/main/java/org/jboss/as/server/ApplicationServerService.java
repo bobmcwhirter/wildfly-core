@@ -35,6 +35,7 @@ import java.util.TreeSet;
 import org.jboss.as.controller.ControlledProcessState;
 import org.jboss.as.controller.RunningModeControl;
 import org.jboss.as.repository.ContentRepository;
+import org.jboss.as.repository.EmbeddedContentRepository;
 import org.jboss.as.server.deployment.ContentCleanerService;
 import org.jboss.as.server.deployment.DeploymentMountProvider;
 import org.jboss.as.server.logging.ServerLogger;
@@ -107,7 +108,7 @@ final class ApplicationServerService implements Service<AsyncFuture<ServiceConta
             ServerLogger.CONFIG_LOGGER.debugf(ServerLogger.ROOT_LOGGER.vmArgumentsLabel(getVMArguments()));
             if (ServerLogger.CONFIG_LOGGER.isTraceEnabled()) {
                 b.setLength(0);
-                final Map<String,String> env = System.getenv();
+                final Map<String, String> env = System.getenv();
                 b.append(ServerLogger.ROOT_LOGGER.configuredSystemEnvironmentLabel());
                 for (String key : new TreeSet<String>(env.keySet())) {
                     String envVal = key.toLowerCase(Locale.getDefault()).contains("password") ? "<redacted>" : env.get(key);
@@ -133,8 +134,12 @@ final class ApplicationServerService implements Service<AsyncFuture<ServiceConta
         final BootstrapListener bootstrapListener = new BootstrapListener(container, startTime, serviceTarget, futureContainer, prettyVersion);
         bootstrapListener.getStabilityMonitor().addController(myController);
         // Install either a local or remote content repository
-        if(standalone) {
-            ContentRepository.Factory.addService(serviceTarget, serverEnvironment.getServerContentDir());
+        if (standalone) {
+            if (this.configuration.getServerEnvironment().isEmbedded()) {
+                EmbeddedContentRepository.addService(serviceTarget);
+            } else {
+                ContentRepository.Factory.addService(serviceTarget, serverEnvironment.getServerContentDir());
+            }
         } else {
             RemoteFileRepositoryService.addService(serviceTarget, serverEnvironment.getServerContentDir());
         }
@@ -158,7 +163,7 @@ final class ApplicationServerService implements Service<AsyncFuture<ServiceConta
             }
         };
 
-        for(ServiceActivator activator : extraServices) {
+        for (ServiceActivator activator : extraServices) {
             activator.activate(serviceActivatorContext);
         }
 
@@ -201,14 +206,14 @@ final class ApplicationServerService implements Service<AsyncFuture<ServiceConta
     }
 
     private String getVMArguments() {
-      final StringBuilder result = new StringBuilder(1024);
-      final RuntimeMXBean rmBean = ManagementFactory.getRuntimeMXBean();
-      final List<String> inputArguments = rmBean.getInputArguments();
-      for (String arg : inputArguments) {
-          result.append(arg).append(" ");
-      }
-      return result.toString();
-   }
+        final StringBuilder result = new StringBuilder(1024);
+        final RuntimeMXBean rmBean = ManagementFactory.getRuntimeMXBean();
+        final List<String> inputArguments = rmBean.getInputArguments();
+        for (String arg : inputArguments) {
+            result.append(arg).append(" ");
+        }
+        return result.toString();
+    }
 
     private static <S> S service(final Class<S> service) {
         final ServiceLoader<S> serviceLoader = ServiceLoader.load(service);

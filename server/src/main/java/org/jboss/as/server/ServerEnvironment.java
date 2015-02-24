@@ -60,15 +60,25 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
 
     private static final long serialVersionUID = 1725061010357265545L;
 
-    /** The manner in which a server can be launched */
+    /**
+     * The manner in which a server can be launched
+     */
     public static enum LaunchType {
-        /** Launched by a Host Controller in a managed domain */
+        /**
+         * Launched by a Host Controller in a managed domain
+         */
         DOMAIN(ProcessType.DOMAIN_SERVER),
-        /** Launched from the command line */
+        /**
+         * Launched from the command line
+         */
         STANDALONE(ProcessType.STANDALONE_SERVER),
-        /** Launched by another process in which the server is embedded */
+        /**
+         * Launched by another process in which the server is embedded
+         */
         EMBEDDED(ProcessType.EMBEDDED_SERVER),
-        /** Launched by a Java EE appclient */
+        /**
+         * Launched by a Java EE appclient
+         */
         APPCLIENT(ProcessType.APPLICATION_CLIENT);
 
         private final ProcessType processType;
@@ -99,11 +109,11 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying the directory returned from
      * {@link #getModulesDir()}.
-     *
+     * <p/>
      * <p>
      * Defaults to <tt><em>HOME_DIR</em>/modules</tt>/
      * </p>
-     *
+     * <p/>
      * <strong>This system property has no real meaning and should not be regarded as providing any sort of useful
      * information.</strong> The "modules" directory is the default location from which JBoss Modules looks to find
      * modules. However, this behavior is in no way controlled by this system property, nor is it guaranteed that
@@ -112,16 +122,15 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
      * resources is not something available from this class. Users wishing to interact with the modular classloading
      * system should use the APIs provided by JBoss Modules
      *
-     *
-     * @deprecated  has no useful meaning
+     * @deprecated has no useful meaning
      */
     @Deprecated
     public static final String MODULES_DIR = "jboss.modules.dir";
 
     /**
      * Constant that holds the name of the system property for specifying {@link #getBundlesDir() the bundles directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>HOME_DIR</em>/bundles</tt>/
      */
     public static final String BUNDLES_DIR = "jboss.bundles.dir";
@@ -134,8 +143,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying
      * {@link #getServerBaseDir() the server base directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>HOME_DIR</em>/standalone</tt>.
      */
     public static final String SERVER_BASE_DIR = "jboss.server.base.dir";
@@ -143,8 +152,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying
      * {@link #getServerConfigurationDir()} () the server configuration directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>SERVER_BASE_DIR</em>/configuration</tt> .
      */
     public static final String SERVER_CONFIG_DIR = "jboss.server.config.dir";
@@ -152,8 +161,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying
      * {@link #getServerDataDir()} () the server data directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>SERVER_BASE_DIR</em>/data</tt>.
      */
     public static final String SERVER_DATA_DIR = "jboss.server.data.dir";
@@ -161,8 +170,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying
      * {@link #getServerContentDir() the server managed content repository directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>SERVER_DATA_DIR</em>/content</tt>.
      */
     public static final String SERVER_CONTENT_DIR = "jboss.server.content.dir";
@@ -178,8 +187,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying
      * {@link #getServerLogDir() the server log directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>SERVER_BASE_DIR</em>/<em>log</em></tt>.
      */
     public static final String SERVER_LOG_DIR = "jboss.server.log.dir";
@@ -187,8 +196,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Constant that holds the name of the system property for specifying t
      * {@link #getServerTempDir() the server temp directory}.
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * Defaults to <tt><em>SERVER_BASE_DIR</em>/tmp</tt> .
      */
     public static final String SERVER_TEMP_DIR = "jboss.server.temp.dir";
@@ -261,23 +270,31 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     protected static final String DOMAIN_BASE_DIR = "jboss.domain.base.dir";
     protected static final String DOMAIN_CONFIG_DIR = "jboss.domain.config.dir";
 
-    /** Properties that cannot be set via {@link #systemPropertyUpdated(String, String)} */
+    /**
+     * Properties that cannot be set via {@link #systemPropertyUpdated(String, String)}
+     */
     private static final Set<String> ILLEGAL_PROPERTIES = new HashSet<String>(Arrays.asList(DOMAIN_BASE_DIR,
             DOMAIN_CONFIG_DIR, JAVA_EXT_DIRS, HOME_DIR, "modules.path", SERVER_BASE_DIR, SERVER_CONFIG_DIR,
             SERVER_DATA_DIR, SERVER_DEPLOY_DIR, SERVER_LOG_DIR, BOOTSTRAP_MAX_THREADS, CONTROLLER_TEMP_DIR,
             JBOSS_SERVER_DEFAULT_CONFIG, JBOSS_PERSIST_SERVER_CONFIG));
-    /** Properties that can only be set via {@link #systemPropertyUpdated(String, String)} during server boot. */
+    /**
+     * Properties that can only be set via {@link #systemPropertyUpdated(String, String)} during server boot.
+     */
     private static final Set<String> BOOT_PROPERTIES = new HashSet<String>(Arrays.asList(BUNDLES_DIR, SERVER_TEMP_DIR,
             NODE_NAME, SERVER_NAME, HOST_NAME, QUALIFIED_HOST_NAME));
 
-    /** Properties that we care about that were provided to the constructor (i.e. by the user via cmd line) */
+    /**
+     * Properties that we care about that were provided to the constructor (i.e. by the user via cmd line)
+     */
     private final Properties primordialProperties;
     /**
      * Properties that we care about that have been provided by the user either via cmd line or
      * via {@link #systemPropertyUpdated(String, String)}
      */
     private final Properties providedProperties;
-    /** Whether the server name has been provided via {@link #setProcessName(String)} */
+    /**
+     * Whether the server name has been provided via {@link #setProcessName(String)}
+     */
     private volatile boolean processNameSet;
 
     private final LaunchType launchType;
@@ -335,168 +352,198 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
         // Java system-wide extension dirs
         javaExtDirs = getFilesFromProperty(JAVA_EXT_DIRS, props);
 
-        // Must have HOME_DIR
-        homeDir = getFileFromProperty(HOME_DIR, props);
-        if (homeDir == null) {
-            throw ServerLogger.ROOT_LOGGER.missingHomeDirConfiguration(HOME_DIR);
-        }
-        if (!homeDir.exists() || !homeDir.isDirectory()) {
-            throw ServerLogger.ROOT_LOGGER.homeDirectoryDoesNotExist(homeDir);
-        }
-
-        @SuppressWarnings("deprecation")
-        File tmp = getFileFromProperty(MODULES_DIR, props);
-        if (tmp == null) {
-            tmp = new File(homeDir, "modules");
-        } else if (!tmp.exists() || !tmp.isDirectory()) {
-            throw ServerLogger.ROOT_LOGGER.modulesDirectoryDoesNotExist(tmp);
-        }
-        modulesDir = tmp;
-
-        configureBundlesDir(props.getProperty(BUNDLES_DIR), props);
-
-        tmp = getFileFromProperty(SERVER_BASE_DIR, props);
-        if (tmp == null) {
-            tmp = new File(homeDir, standalone ? "standalone" : "domain/servers/" + serverName);
-        }
-        if (standalone) {
-            if (!tmp.exists()) {
-                throw ServerLogger.ROOT_LOGGER.serverBaseDirectoryDoesNotExist(tmp);
-            } else if (!tmp.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.serverBaseDirectoryIsNotADirectory(tmp);
+        if (launchType != LaunchType.EMBEDDED) {
+            // Must have HOME_DIR
+            homeDir = getFileFromProperty(HOME_DIR, props);
+            if (homeDir == null) {
+                throw ServerLogger.ROOT_LOGGER.missingHomeDirConfiguration(HOME_DIR);
             }
-        } else {
-            if (tmp.exists()) {
-                if (!tmp.isDirectory()) {
+            if (!homeDir.exists() || !homeDir.isDirectory()) {
+                throw ServerLogger.ROOT_LOGGER.homeDirectoryDoesNotExist(homeDir);
+            }
+
+            @SuppressWarnings("deprecation")
+            File tmp = getFileFromProperty(MODULES_DIR, props);
+            if (tmp == null) {
+                tmp = new File(homeDir, "modules");
+            } else if (!tmp.exists() || !tmp.isDirectory()) {
+                throw ServerLogger.ROOT_LOGGER.modulesDirectoryDoesNotExist(tmp);
+            }
+            modulesDir = tmp;
+
+            configureBundlesDir(props.getProperty(BUNDLES_DIR), props);
+
+            tmp = getFileFromProperty(SERVER_BASE_DIR, props);
+            if (tmp == null) {
+                tmp = new File(homeDir, standalone ? "standalone" : "domain/servers/" + serverName);
+            }
+            if (standalone) {
+                if (!tmp.exists()) {
+                    throw ServerLogger.ROOT_LOGGER.serverBaseDirectoryDoesNotExist(tmp);
+                } else if (!tmp.isDirectory()) {
                     throw ServerLogger.ROOT_LOGGER.serverBaseDirectoryIsNotADirectory(tmp);
                 }
+            } else {
+                if (tmp.exists()) {
+                    if (!tmp.isDirectory()) {
+                        throw ServerLogger.ROOT_LOGGER.serverBaseDirectoryIsNotADirectory(tmp);
+                    }
+                } else if (!tmp.mkdirs()) {
+                    throw ServerLogger.ROOT_LOGGER.couldNotCreateServerBaseDirectory(tmp);
+                }
             }
-            else if (!tmp.mkdirs()) {
-                throw ServerLogger.ROOT_LOGGER.couldNotCreateServerBaseDirectory(tmp);
+            serverBaseDir = tmp;
+
+
+            tmp = getFileFromProperty(SERVER_CONFIG_DIR, props);
+            if (tmp == null) {
+                tmp = new File(serverBaseDir, "configuration");
             }
-        }
-        serverBaseDir = tmp;
-
-
-        tmp = getFileFromProperty(SERVER_CONFIG_DIR, props);
-        if (tmp == null) {
-            tmp = new File(serverBaseDir, "configuration");
-        }
-        serverConfigurationDir = tmp;
-        if (standalone && (!serverConfigurationDir.exists() || !serverConfigurationDir.isDirectory())) {
-            throw ServerLogger.ROOT_LOGGER.configDirectoryDoesNotExist(serverConfigurationDir);
-        }
-
-        String defaultServerConfig = WildFlySecurityManager.getPropertyPrivileged(JBOSS_SERVER_DEFAULT_CONFIG, "standalone.xml");
-        String config = initialServerConfig == null ? serverConfig : initialServerConfig;
-        boolean persist = initialServerConfig == null;
-        serverConfigurationFile = standalone ? new ConfigurationFile(serverConfigurationDir, defaultServerConfig, config, persist) : null;
-        // Adds a system property to indicate whether or not the server configuration should be persisted
-        @SuppressWarnings("deprecation")
-        final String propertyKey = JBOSS_PERSIST_SERVER_CONFIG;
-        WildFlySecurityManager.setPropertyPrivileged(propertyKey, Boolean.toString(persist));
-
-        tmp = getFileFromProperty(SERVER_DATA_DIR, props);
-        if (tmp == null) {
-            tmp = new File(serverBaseDir, "data");
-        }
-        serverDataDir = tmp;
-        if (serverDataDir.exists()) {
-            if (!serverDataDir.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.serverDataDirectoryIsNotDirectory(serverDataDir);
+            serverConfigurationDir = tmp;
+            if (standalone && (!serverConfigurationDir.exists() || !serverConfigurationDir.isDirectory())) {
+                throw ServerLogger.ROOT_LOGGER.configDirectoryDoesNotExist(serverConfigurationDir);
             }
-        } else {
-            if (!serverDataDir.mkdirs()) {
-                throw ServerLogger.ROOT_LOGGER.couldNotCreateServerDataDirectory(serverDataDir);
-            }
-        }
 
-        tmp = getFileFromProperty(SERVER_CONTENT_DIR, props);
-        if (tmp == null) {
+            String defaultServerConfig = WildFlySecurityManager.getPropertyPrivileged(JBOSS_SERVER_DEFAULT_CONFIG, "standalone.xml");
+            String config = initialServerConfig == null ? serverConfig : initialServerConfig;
+            boolean persist = initialServerConfig == null;
+            serverConfigurationFile = standalone ? new ConfigurationFile(serverConfigurationDir, defaultServerConfig, config, persist) : null;
+            // Adds a system property to indicate whether or not the server configuration should be persisted
             @SuppressWarnings("deprecation")
-            String deprecatedProp = SERVER_DEPLOY_DIR;
-            tmp = getFileFromProperty(deprecatedProp, props);
-        }
-        if (tmp == null) {
-            tmp = new File(serverDataDir, "content");
-        }
-        serverContentDir = tmp;
-        if (serverContentDir.exists()) {
-            if (!serverContentDir.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.serverContentDirectoryIsNotDirectory(serverContentDir);
+            final String propertyKey = JBOSS_PERSIST_SERVER_CONFIG;
+            WildFlySecurityManager.setPropertyPrivileged(propertyKey, Boolean.toString(persist));
+
+            tmp = getFileFromProperty(SERVER_DATA_DIR, props);
+            if (tmp == null) {
+                tmp = new File(serverBaseDir, "data");
             }
-        } else if (!serverContentDir.mkdirs()) {
-            throw ServerLogger.ROOT_LOGGER.couldNotCreateServerContentDirectory(serverContentDir);
-        }
+            serverDataDir = tmp;
+            if (serverDataDir.exists()) {
+                if (!serverDataDir.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.serverDataDirectoryIsNotDirectory(serverDataDir);
+                }
+            } else {
+                if (!serverDataDir.mkdirs()) {
+                    throw ServerLogger.ROOT_LOGGER.couldNotCreateServerDataDirectory(serverDataDir);
+                }
+            }
+
+            tmp = getFileFromProperty(SERVER_CONTENT_DIR, props);
+            if (tmp == null) {
+                @SuppressWarnings("deprecation")
+                String deprecatedProp = SERVER_DEPLOY_DIR;
+                tmp = getFileFromProperty(deprecatedProp, props);
+            }
+            if (tmp == null) {
+                tmp = new File(serverDataDir, "content");
+            }
+            serverContentDir = tmp;
+            if (serverContentDir.exists()) {
+                if (!serverContentDir.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.serverContentDirectoryIsNotDirectory(serverContentDir);
+                }
+            } else if (!serverContentDir.mkdirs()) {
+                throw ServerLogger.ROOT_LOGGER.couldNotCreateServerContentDirectory(serverContentDir);
+            }
 
 
-        tmp = getFileFromProperty(SERVER_LOG_DIR, props);
-        if (tmp == null) {
-            tmp = new File(serverBaseDir, "log");
-        }
-        if (tmp.exists()) {
-            if (!tmp.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.logDirectoryIsNotADirectory(tmp);
+            tmp = getFileFromProperty(SERVER_LOG_DIR, props);
+            if (tmp == null) {
+                tmp = new File(serverBaseDir, "log");
             }
-        } else if (!tmp.mkdirs()) {
-            throw ServerLogger.ROOT_LOGGER.couldNotCreateLogDirectory(tmp);
-        }
-        serverLogDir = tmp;
+            if (tmp.exists()) {
+                if (!tmp.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.logDirectoryIsNotADirectory(tmp);
+                }
+            } else if (!tmp.mkdirs()) {
+                throw ServerLogger.ROOT_LOGGER.couldNotCreateLogDirectory(tmp);
+            }
+            serverLogDir = tmp;
 
-        tmp = configureServerTempDir(props.getProperty(SERVER_TEMP_DIR), props);
-        if (tmp.exists()) {
-            if (!tmp.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.serverTempDirectoryIsNotADirectory(tmp);
+            tmp = configureServerTempDir(props.getProperty(SERVER_TEMP_DIR), props);
+            if (tmp.exists()) {
+                if (!tmp.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.serverTempDirectoryIsNotADirectory(tmp);
+                }
+            } else if (!tmp.mkdirs()) {
+                throw ServerLogger.ROOT_LOGGER.couldNotCreateServerTempDirectory(tmp);
             }
-        } else if (!tmp.mkdirs()){
-            throw ServerLogger.ROOT_LOGGER.couldNotCreateServerTempDirectory(tmp);
-        }
 
-        tmp = getFileFromProperty(CONTROLLER_TEMP_DIR, props);
-        if (tmp == null) {
-            tmp = serverTempDir;
-        }
-        if (tmp.exists()) {
-            if (!tmp.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.controllerTempDirectoryIsNotADirectory(tmp);
+            tmp = getFileFromProperty(CONTROLLER_TEMP_DIR, props);
+            if (tmp == null) {
+                tmp = serverTempDir;
             }
-        } else if (!tmp.mkdirs()){
-            throw ServerLogger.ROOT_LOGGER.couldNotCreateControllerTempDirectory(tmp);
-        }
-        controllerTempDir = tmp;
+            if (tmp.exists()) {
+                if (!tmp.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.controllerTempDirectoryIsNotADirectory(tmp);
+                }
+            } else if (!tmp.mkdirs()) {
+                throw ServerLogger.ROOT_LOGGER.couldNotCreateControllerTempDirectory(tmp);
+            }
+            controllerTempDir = tmp;
 
-        // Optional paths for the domain mode
-        tmp = getFileFromProperty(DOMAIN_BASE_DIR, props);
-        if (tmp != null) {
-            if (!tmp.exists() || !tmp.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.domainBaseDirDoesNotExist(tmp);
+            // Optional paths for the domain mode
+            tmp = getFileFromProperty(DOMAIN_BASE_DIR, props);
+            if (tmp != null) {
+                if (!tmp.exists() || !tmp.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.domainBaseDirDoesNotExist(tmp);
+                }
+                this.domainBaseDir = tmp;
+            } else {
+                this.domainBaseDir = null;
             }
-            this.domainBaseDir = tmp;
+            tmp = getFileFromProperty(DOMAIN_CONFIG_DIR, props);
+            if (tmp != null) {
+                if (!tmp.exists() || !tmp.isDirectory()) {
+                    throw ServerLogger.ROOT_LOGGER.domainConfigDirDoesNotExist(tmp);
+                }
+                this.domainConfigurationDir = tmp;
+            } else {
+                this.domainConfigurationDir = null;
+            }
+
+            boolean allowExecutor = true;
+            String maxThreads = WildFlySecurityManager.getPropertyPrivileged(BOOTSTRAP_MAX_THREADS, null);
+            if (maxThreads != null && maxThreads.length() > 0) {
+                try {
+                    Integer.decode(maxThreads);
+                    // Property was set to a valid value; user wishes to control core service threads
+                    allowExecutor = false;
+                } catch (NumberFormatException ex) {
+                    ServerLogger.ROOT_LOGGER.failedToParseCommandLineInteger(BOOTSTRAP_MAX_THREADS, maxThreads);
+                }
+            }
+            allowModelControllerExecutor = allowExecutor;
+            WildFlySecurityManager.setPropertyPrivileged(HOME_DIR, homeDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(MODULES_DIR, modulesDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_BASE_DIR, serverBaseDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_CONFIG_DIR, serverConfigurationDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_LOG_DIR, serverLogDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_DATA_DIR, serverDataDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_DEPLOY_DIR, serverContentDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_TEMP_DIR, serverTempDir.getAbsolutePath());
+
+            if (launchType.getProcessType() == ProcessType.DOMAIN_SERVER) {
+                if (domainBaseDir != null) {
+                    WildFlySecurityManager.setPropertyPrivileged(DOMAIN_BASE_DIR, domainBaseDir.getAbsolutePath());
+                }
+                if (domainConfigurationDir != null) {
+                    WildFlySecurityManager.setPropertyPrivileged(DOMAIN_CONFIG_DIR, domainConfigurationDir.getAbsolutePath());
+                }
+            }
         } else {
-            this.domainBaseDir = null;
+            homeDir = null;
+            modulesDir = null;
+            serverBaseDir = null;
+            serverDataDir = null;
+            serverConfigurationDir = null;
+            serverConfigurationFile = null;
+            serverLogDir = null;
+            controllerTempDir = null;
+            allowModelControllerExecutor = false;
+            domainBaseDir = null;
+            domainConfigurationDir = null;
         }
-        tmp = getFileFromProperty(DOMAIN_CONFIG_DIR, props);
-        if (tmp != null) {
-            if (!tmp.exists() || !tmp.isDirectory()) {
-                throw ServerLogger.ROOT_LOGGER.domainConfigDirDoesNotExist(tmp);
-            }
-            this.domainConfigurationDir = tmp;
-        } else {
-            this.domainConfigurationDir = null;
-        }
-
-        boolean allowExecutor = true;
-        String maxThreads = WildFlySecurityManager.getPropertyPrivileged(BOOTSTRAP_MAX_THREADS, null);
-        if (maxThreads != null && maxThreads.length() > 0) {
-            try {
-                Integer.decode(maxThreads);
-                // Property was set to a valid value; user wishes to control core service threads
-                allowExecutor = false;
-            } catch(NumberFormatException ex) {
-                ServerLogger.ROOT_LOGGER.failedToParseCommandLineInteger(BOOTSTRAP_MAX_THREADS, maxThreads);
-            }
-        }
-        allowModelControllerExecutor = allowExecutor;
 
         this.productConfig = productConfig;
 
@@ -512,23 +559,6 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
         WildFlySecurityManager.setPropertyPrivileged(HOST_NAME, hostName);
         WildFlySecurityManager.setPropertyPrivileged(SERVER_NAME, serverName);
         WildFlySecurityManager.setPropertyPrivileged(NODE_NAME, nodeName);
-        WildFlySecurityManager.setPropertyPrivileged(HOME_DIR, homeDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(MODULES_DIR, modulesDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(SERVER_BASE_DIR, serverBaseDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(SERVER_CONFIG_DIR, serverConfigurationDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(SERVER_DATA_DIR, serverDataDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(SERVER_DEPLOY_DIR, serverContentDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(SERVER_LOG_DIR, serverLogDir.getAbsolutePath());
-        WildFlySecurityManager.setPropertyPrivileged(SERVER_TEMP_DIR, serverTempDir.getAbsolutePath());
-
-        if(launchType.getProcessType() == ProcessType.DOMAIN_SERVER) {
-            if(domainBaseDir != null) {
-                WildFlySecurityManager.setPropertyPrivileged(DOMAIN_BASE_DIR, domainBaseDir.getAbsolutePath());
-            }
-            if(domainConfigurationDir != null) {
-                WildFlySecurityManager.setPropertyPrivileged(DOMAIN_CONFIG_DIR, domainConfigurationDir.getAbsolutePath());
-            }
-        }
 
         // Register the vfs module as URLStreamHandlerFactory
         try {
@@ -564,7 +594,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
      * standalone servers, which do not utilize a host controller, the value should be <code>null</code>.
      *
      * @return server's host controller name if the instance is running in domain mode, or <code>null</code> if running in standalone
-     *         mode
+     * mode
      */
     public String getHostControllerName() {
         return hostControllerName;
@@ -716,7 +746,6 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
      * system should use the APIs provided by JBoss Modules.
      *
      * @return a file
-     *
      * @deprecated has no reliable meaning
      */
     @Deprecated
@@ -726,7 +755,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
 
     /**
      * Gets the directory under which OSGi bundles should be located.
-     *
+     * <p/>
      * <p>Defaults to {@link #getHomeDir() homeDir}/bundles</p>
      *
      * @return the bundles directory
@@ -752,7 +781,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
 
     /**
      * Gets the based directory for this server.
-     *
+     * <p/>
      * <p>Defaults to <tt>{@link #getHomeDir() homeDir}/standalone</tt> for a standalone server or
      * <tt>domain/servers/<server-name></tt> for a managed domain server.</p>
      *
@@ -794,7 +823,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
 
     /**
      * Gets the directory in which the server will store server-managed user content (e.g. deployments.)
-     *
+     * <p/>
      * <p>Defaults to {@link #getServerDataDir()}  serverDataDir}/content</p>
      *
      * @return the domain managed content storage directory
@@ -805,8 +834,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
 
     /**
      * Deprecated previous name for {@link #getServerContentDir()}.
-     * @return the server managed content storage directory.
      *
+     * @return the server managed content storage directory.
      * @deprecated use {@link #getServerContentDir()}
      */
     @Deprecated
@@ -884,6 +913,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
 
     /**
      * Gets whether this server is an independently managed server, not managed as part of a managed domain.
+     *
      * @return {@code true} if this server is an independently managed server
      */
     public boolean isStandalone() {
@@ -891,9 +921,18 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     }
 
     /**
+     * Gets whether this server is an embedded server, not a standalone multi-application container.
+     *
+     * @return {@code true} if this server is an independently managed server
+     */
+    public boolean isEmbedded() {
+        return launchType == LaunchType.EMBEDDED;
+    }
+
+    /**
      * Gets the {@link RunningMode} that was in effect when this server was launched.
      *
-     * @return  the initial running mode
+     * @return the initial running mode
      */
     public RunningMode getInitialRunningMode() {
         return initialRunningMode;
@@ -925,8 +964,9 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Determine the number of threads to use for the bootstrap service container. This reads
      * the {@link #BOOTSTRAP_MAX_THREADS} system property and if not set, defaults to 2*cpus.
-     * @see Runtime#availableProcessors()
+     *
      * @return the maximum number of threads to use for the bootstrap service container.
+     * @see Runtime#availableProcessors()
      */
     public static int getBootstrapMaxThreads() {
         // Base the bootstrap thread on proc count if not specified
@@ -937,7 +977,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
             try {
                 int max = Integer.decode(maxThreads);
                 defaultThreads = Math.max(max, 1);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 ServerLogger.ROOT_LOGGER.failedToParseCommandLineInteger(BOOTSTRAP_MAX_THREADS, maxThreads);
             }
         }
@@ -1002,9 +1042,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Get a File from configuration.
      *
-     * @param name the name of the property
+     * @param name  the name of the property
      * @param props the set of configuration properties
-     *
      * @return the CanonicalFile form for the given name.
      */
     private File getFileFromProperty(final String name, final Properties props) {
@@ -1015,7 +1054,6 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
      * Get a File from configuration.
      *
      * @param path the file path
-     *
      * @return the CanonicalFile form for the given name.
      */
     private File getFileFromPath(final String path) {
@@ -1035,9 +1073,8 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     /**
      * Get a File path list from configuration.
      *
-     * @param name the name of the property
+     * @param name  the name of the property
      * @param props the set of configuration properties
-     *
      * @return the CanonicalFile form for the given name.
      */
     private File[] getFilesFromProperty(final String name, final Properties props) {
