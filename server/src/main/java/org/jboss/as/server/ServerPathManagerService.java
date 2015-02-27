@@ -40,11 +40,15 @@ public class ServerPathManagerService extends PathManagerService {
         if ( ! serverEnvironment.isEmbedded() ) {
             service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.HOME_DIR, serverEnvironment.getHomeDir().getAbsolutePath());
             service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_BASE_DIR, serverEnvironment.getServerBaseDir().getAbsolutePath());
-            service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_CONFIG_DIR, serverEnvironment.getServerConfigurationDir().getAbsolutePath());
             service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_DATA_DIR, serverEnvironment.getServerDataDir().getAbsolutePath());
-            service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_LOG_DIR, serverEnvironment.getServerLogDir().getAbsolutePath());
             service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_TEMP_DIR, serverEnvironment.getServerTempDir().getAbsolutePath());
             service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.CONTROLLER_TEMP_DIR, serverEnvironment.getControllerTempDir().getAbsolutePath());
+        }
+        if ( serverEnvironment.getServerLogDir() != null ) {
+            service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_LOG_DIR, serverEnvironment.getServerLogDir().getAbsolutePath());
+        }
+        if ( serverEnvironment.getServerConfigurationDir() != null ) {
+            service.addHardcodedAbsolutePath(serviceTarget, ServerEnvironment.SERVER_CONFIG_DIR, serverEnvironment.getServerConfigurationDir().getAbsolutePath());
         }
 
         // Add system paths

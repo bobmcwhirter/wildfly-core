@@ -536,13 +536,16 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
             modulesDir = null;
             serverBaseDir = null;
             serverDataDir = null;
-            serverConfigurationDir = null;
             serverConfigurationFile = null;
-            serverLogDir = null;
+            serverConfigurationDir = new File(System.getProperty("user.dir"));
+            serverLogDir = new File(System.getProperty("user.dir"));
             controllerTempDir = null;
             allowModelControllerExecutor = false;
             domainBaseDir = null;
             domainConfigurationDir = null;
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_LOG_DIR, serverLogDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(SERVER_CONFIG_DIR, serverConfigurationDir.getAbsolutePath());
+            WildFlySecurityManager.setPropertyPrivileged(ServerEnvironment.JBOSS_PERSIST_SERVER_CONFIG, "false" );
         }
 
         this.productConfig = productConfig;

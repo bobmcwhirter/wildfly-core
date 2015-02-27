@@ -706,6 +706,7 @@ final class OperationContextImpl extends AbstractOperationContext {
         assertNotComplete(currentStage);
         //Clone the operation to preserve all the headers
         ModelNode operation = activeStep.operation.clone();
+        System.err.println( "CURRENT ACTIVE STEP: " + operation );
         operation.get(OP).set(ReadResourceHandler.DEFINITION.getName());
         operation.get(OP_ADDR).set(address.toModelNode());
         OperationId opId = new OperationId(operation);
@@ -719,6 +720,7 @@ final class OperationContextImpl extends AbstractOperationContext {
             throw ControllerLogger.ROOT_LOGGER.unauthorized(activeStep.operationId.name, activeStep.address, authResult.getExplanation());
         }
         Resource model = this.managementModel.getRootResource();
+        System.err.println( "RESOURCE MODEL: " + model );
         final Iterator<PathElement> iterator = address.iterator();
         while(iterator.hasNext()) {
             final PathElement element = iterator.next();
@@ -747,6 +749,7 @@ final class OperationContextImpl extends AbstractOperationContext {
         } else {
             final Resource copy = Resource.Factory.create();
             copy.writeModel(model.getModel());
+            System.err.println( "Child types: " + model.getChildTypes() );
             for(final String childType : model.getChildTypes()) {
                 for(final Resource.ResourceEntry child : model.getChildren(childType)) {
                     copy.registerChild(child.getPathElement(), PlaceholderResource.INSTANCE);

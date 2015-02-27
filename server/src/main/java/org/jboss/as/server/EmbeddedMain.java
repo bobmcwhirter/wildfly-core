@@ -22,20 +22,15 @@
 
 package org.jboss.as.server;
 
-import org.jboss.as.controller.PathAddress;
 import org.jboss.as.controller.RunningMode;
-import org.jboss.as.controller.persistence.ConfigurationPersistenceException;
 import org.jboss.as.controller.persistence.ExtensibleConfigurationPersister;
-import org.jboss.as.controller.persistence.SubsystemMarshallingContext;
 import org.jboss.as.process.CommandLineConstants;
 import org.jboss.as.process.ExitCodes;
 import org.jboss.as.server.logging.ServerLogger;
 import org.jboss.as.version.ProductConfig;
-import org.jboss.dmr.ModelNode;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.msc.service.ServiceActivator;
-import org.jboss.staxmapper.XMLElementWriter;
 import org.jboss.stdio.LoggingOutputStream;
 import org.jboss.stdio.NullInputStream;
 import org.jboss.stdio.SimpleStdioContextSelector;
@@ -44,16 +39,12 @@ import org.wildfly.security.manager.WildFlySecurityManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 
@@ -83,6 +74,10 @@ public final class EmbeddedMain {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
+        System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
+        System.err.println("CONTEXT CLASSLOADER: " + Thread.currentThread().getContextClassLoader());
+        Thread.currentThread().setContextClassLoader(Module.getCallerModule().getClassLoader());
+        System.err.println("CONTEXT CLASSLOADER: " + Thread.currentThread().getContextClassLoader());
         try {
             if (java.util.logging.LogManager.getLogManager().getClass().getName().equals("org.jboss.logmanager.LogManager")) {
                 // Make sure our original stdio is properly captured.
@@ -91,7 +86,7 @@ public final class EmbeddedMain {
                 } catch (Throwable ignored) {
                 }
                 // Install JBoss Stdio to avoid any nasty crosstalk, after command line arguments are processed.
-                StdioContext.install();
+                //StdioContext.install();
                 final StdioContext context = StdioContext.create(
                         new NullInputStream(),
                         new LoggingOutputStream(org.jboss.logmanager.Logger.getLogger("stdout"), org.jboss.logmanager.Level.INFO),
@@ -111,57 +106,9 @@ public final class EmbeddedMain {
                         new Bootstrap.ConfigurationPersisterFactory() {
                             @Override
                             public ExtensibleConfigurationPersister createConfigurationPersister(ServerEnvironment serverEnvironment, ExecutorService executorService) {
-                                return new ExtensibleConfigurationPersister() {
-                                    @Override
-                                    public PersistenceResource store(ModelNode model, Set<PathAddress> affectedAddresses) throws ConfigurationPersistenceException {
-                                        System.err.println( "configPersister.store: " + model + " // " + affectedAddresses );
-                                        return null;
-                                    }
-
-                                    @Override
-                                    public void marshallAsXml(ModelNode model, OutputStream output) throws ConfigurationPersistenceException {
-                                        System.err.println( "configPersister.marshallAsXml: " + model );
-                                    }
-
-                                    @Override
-                                    public List<ModelNode> load() throws ConfigurationPersistenceException {
-                                        System.err.println( "configPersister.load" );
-                                        return new ArrayList<>();
-                                    }
-
-                                    @Override
-                                    public void successfulBoot() throws ConfigurationPersistenceException {
-                                        System.err.println( "configPersister.successfulBoot" );
-                                    }
-
-                                    @Override
-                                    public String snapshot() throws ConfigurationPersistenceException {
-                                        System.err.println( "configPersister.snapshot" );
-                                        return null;
-                                    }
-
-                                    @Override
-                                    public SnapshotInfo listSnapshots() {
-                                        System.err.println( "configPersister.listSnapshots" );
-                                        return null;
-                                    }
-
-                                    @Override
-                                    public void deleteSnapshot(String name) {
-                                        System.err.println( "configPersister.deleteSnapshot: " + name  );
-                                    }
-
-                                    @Override
-                                    public void registerSubsystemWriter(String name, XMLElementWriter<SubsystemMarshallingContext> writer) {
-                                        System.err.println( "configPersister.registerSubsystemWriter: " + name );
-
-                                    }
-
-                                    @Override
-                                    public void unregisterSubsystemWriter(String name) {
-                                        System.err.println( "configPersister.unregisterSubsystemWriter: " + name );
-                                    }
-                                };
+                                EmbeddedConfigurationPersister persister = new EmbeddedConfigurationPersister();
+                                configuration.getExtensionRegistry().setWriterRegistry( persister );
+                                return persister;
                             }
                         });
                 configuration.setModuleLoader(Module.getBootModuleLoader());
@@ -169,6 +116,7 @@ public final class EmbeddedMain {
                 return;
             }
         } catch (Throwable t) {
+            t.printStackTrace();
             abort(t);
         }
     }

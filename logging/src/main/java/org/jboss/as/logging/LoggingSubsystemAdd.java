@@ -70,6 +70,7 @@ class LoggingSubsystemAdd extends AbstractAddStepHandler {
 
     @Override
     protected void performRuntime(final OperationContext context, final ModelNode operation, final ModelNode model) throws OperationFailedException {
+        System.err.println( "LOGGING SUBSYSTEM ADD ## performRuntime" );
         final boolean addDependencies = LoggingResourceDefinition.ADD_LOGGING_API_DEPENDENCIES.resolveModelAttribute(context, model).asBoolean();
         final boolean useLoggingConfig = LoggingResourceDefinition.USE_DEPLOYMENT_LOGGING_CONFIG.resolveModelAttribute(context, model).asBoolean();
         context.addStep(new AbstractDeploymentChainStep() {

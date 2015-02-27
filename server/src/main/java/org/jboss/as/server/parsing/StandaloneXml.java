@@ -154,6 +154,11 @@ public class StandaloneXml extends CommonXml {
             long elapsed = System.currentTimeMillis() - start;
             ServerLogger.ROOT_LOGGER.debugf("Parsed standalone configuration in [%d] ms", elapsed);
         }
+
+        for ( ModelNode each : operationList ) {
+            System.err.println( "" );
+            System.err.println( each );
+        }
     }
 
     /**
