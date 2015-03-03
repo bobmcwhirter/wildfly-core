@@ -928,6 +928,15 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
     }
 
     /**
+     * Gets whether this server is a self-contained (no filesystem layout) or not.
+     *
+     * @return {@code ture} if this server is self-contained
+     */
+    public boolean isSelfContained() {
+        return this.launchType == LaunchType.SELF_CONTAINED;
+    }
+
+    /**
      * Gets the {@link RunningMode} that was in effect when this server was launched.
      *
      * @return the initial running mode
