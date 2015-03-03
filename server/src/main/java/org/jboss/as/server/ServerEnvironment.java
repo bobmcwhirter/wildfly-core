@@ -21,17 +21,6 @@
  */
 package org.jboss.as.server;
 
-import java.io.File;
-import java.io.Serializable;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import org.jboss.as.controller.logging.ControllerLogger;
 import org.jboss.as.controller.OperationFailedException;
 import org.jboss.as.controller.ProcessType;
 import org.jboss.as.controller.RunningMode;
@@ -39,6 +28,7 @@ import org.jboss.as.controller.RunningModeControl;
 import org.jboss.as.controller.audit.ManagedAuditLogger;
 import org.jboss.as.controller.audit.ManagedAuditLoggerImpl;
 import org.jboss.as.controller.interfaces.InetAddressUtil;
+import org.jboss.as.controller.logging.ControllerLogger;
 import org.jboss.as.controller.operations.common.ProcessEnvironment;
 import org.jboss.as.controller.persistence.ConfigurationFile;
 import org.jboss.as.network.NetworkUtils;
@@ -48,6 +38,16 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 import org.wildfly.security.manager.WildFlySecurityManager;
+
+import java.io.File;
+import java.io.Serializable;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Encapsulates the runtime environment for a server.
@@ -69,7 +69,9 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
         /** Launched by another process in which the server is embedded */
         EMBEDDED(ProcessType.EMBEDDED_SERVER),
         /** Launched by a Java EE appclient */
-        APPCLIENT(ProcessType.APPLICATION_CLIENT);
+        APPCLIENT(ProcessType.APPLICATION_CLIENT),
+        /** Launched as a self-contained server */
+        SELF_CONTAINED(ProcessType.SELF_CONTAINED);
 
         private final ProcessType processType;
 
