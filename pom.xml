@@ -185,6 +185,7 @@
         <module>remoting</module>
         <module>request-controller</module>
         <module>server</module>
+        <module>self-contained</module>
         <module>subsystem-test</module>
         <module>system-jmx</module>
         <module>testsuite</module>
