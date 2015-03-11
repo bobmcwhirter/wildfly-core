@@ -9,7 +9,6 @@ import org.jboss.dmr.ModelNode;
 import org.jboss.staxmapper.XMLElementWriter;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +16,12 @@ import java.util.Set;
  * @author Bob McWhirter
  */
 public class SelfContainedConfigurationPersister implements ExtensibleConfigurationPersister {
+
+    private final List<ModelNode> containerDefinition;
+
+    public SelfContainedConfigurationPersister(List<ModelNode> containerDefinition) {
+        this.containerDefinition = containerDefinition;
+    }
 
     @Override
     public ConfigurationPersister.PersistenceResource store(ModelNode model, Set<PathAddress> affectedAddresses) throws ConfigurationPersistenceException {
@@ -41,62 +46,7 @@ public class SelfContainedConfigurationPersister implements ExtensibleConfigurat
 
     @Override
     public List<ModelNode> load() throws ConfigurationPersistenceException {
-        List<ModelNode> list = new ArrayList<>();
-
-        /*
-        ModelNode address = new ModelNode().setEmptyList();
-        address.setEmptyList();
-
-        ModelNode add = new ModelNode();
-        add.get(OP_ADDR).set(address).add(EXTENSION, "org.jboss.as.logging");
-        add.get(OP).set(ADD);
-        list.add(add);
-
-        PathAddress loggingAddress = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "logging") );
-
-        ModelNode subsys = new ModelNode();
-        subsys.get( OP_ADDR ).set( loggingAddress.toModelNode() );
-        subsys.get(OP).set(ADD);
-        list.add( subsys );
-
-        ModelNode pattern = new ModelNode();
-        pattern.get( OP_ADDR ).set( loggingAddress.append( "pattern-formatter", "PATTERN" ).toModelNode() );
-        pattern.get(OP).set(ADD);
-        pattern.get( "pattern" ).set( "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n" );
-        list.add( pattern );
-
-
-        ModelNode console = new ModelNode();
-        console.get( OP_ADDR ).set( loggingAddress.append( "console-handler", "CONSOLE" ).toModelNode() );
-        console.get( OP ).set( ADD );
-        console.get( "level" ).set( "INFO" );
-        console.get( "named-formatter" ).set( "PATTERN" );
-        list.add(console);
-
-        ModelNode root = new ModelNode();
-        root.get( OP_ADDR ).set( loggingAddress.append( "root-logger", "ROOT" ).toModelNode() );
-        root.get( OP ).set(ADD );
-        root.get( "handlers" ).add("CONSOLE" );
-        list.add( root );
-
-        System.err.println( "OPS: : : " + list );
-
-        //profile.get(OP).setEmptyList();
-
-        //address.add(profile);
-
-        final PathAddress loggingSubsystem = PathAddress.pathAddress(PathElement.pathElement(SUBSYSTEM, "logging") );
-
-        ModelNode console = Util.createAddOperation();
-        console.get(OP_ADDR).set( loggingSubsystem.append( "console-handler", "console" ).toModelNode() );
-        console.get( "enabled" ).set( true );
-
-        profile.add( console );
-
-        //list.add( profile );
-        */
-
-        return list;
+        return this.containerDefinition;
     }
 
     @Override

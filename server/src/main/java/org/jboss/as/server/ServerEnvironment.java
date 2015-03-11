@@ -352,6 +352,9 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
             serverBaseDir = new File(WildFlySecurityManager.getPropertyPrivileged("user.dir", "."));
             serverLogDir = new File(WildFlySecurityManager.getPropertyPrivileged("user.dir", "."));
 
+            serverTempDir = new File( homeDir, "tmp" );
+            serverTempDir.mkdirs();
+
             modulesDir = null;
             serverConfigurationDir = null;
             serverConfigurationFile = null;

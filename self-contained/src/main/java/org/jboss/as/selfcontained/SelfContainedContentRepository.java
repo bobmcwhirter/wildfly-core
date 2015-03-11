@@ -2,15 +2,18 @@ package org.jboss.as.selfcontained;
 
 import org.jboss.as.repository.ContentReference;
 import org.jboss.as.repository.ContentRepository;
+import org.jboss.msc.inject.Injector;
 import org.jboss.msc.service.Service;
 import org.jboss.msc.service.ServiceTarget;
 import org.jboss.msc.service.StartContext;
 import org.jboss.msc.service.StartException;
 import org.jboss.msc.service.StopContext;
+import org.jboss.msc.value.InjectedValue;
 import org.jboss.vfs.VirtualFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +24,15 @@ public class SelfContainedContentRepository implements ContentRepository, Servic
 
     public static void addService(ServiceTarget serviceTarget) {
         SelfContainedContentRepository contentRepository = new SelfContainedContentRepository();
-        serviceTarget.addService(SERVICE_NAME, contentRepository).install();
+        serviceTarget.addService(SERVICE_NAME, contentRepository)
+                .addDependency( SelfContainedContentService.NAME, VirtualFile.class, contentRepository.getContentInjector() )
+                .install();
+    }
+
+    private InjectedValue<VirtualFile> contentInjector = new InjectedValue<>();
+
+    public Injector<VirtualFile> getContentInjector() {
+        return this.contentInjector;
     }
 
     @Override
@@ -38,6 +49,10 @@ public class SelfContainedContentRepository implements ContentRepository, Servic
     @Override
     public VirtualFile getContent(byte[] hash) {
         System.err.println( "getContent: " + hash );
+        if ( hash.length == 1 && hash[0] == 0 ) {
+            System.err.println( "GETTING CONTENT: " + this.contentInjector.getValue() );
+            return this.contentInjector.getValue();
+        }
         return null;
     }
 
@@ -50,7 +65,7 @@ public class SelfContainedContentRepository implements ContentRepository, Servic
     @Override
     public boolean syncContent(ContentReference reference) {
         System.err.println( "syncContent: " + reference );
-        return false;
+        return true;
     }
 
     @Override
@@ -62,7 +77,8 @@ public class SelfContainedContentRepository implements ContentRepository, Servic
     @Override
     public Map<String, Set<String>> cleanObsoleteContent() {
         System.err.println( "cleanObsoleteContent" );
-        return null;
+        return new HashMap<>();
+        //return null;
     }
 
     @Override
