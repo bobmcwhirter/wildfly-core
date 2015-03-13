@@ -13,6 +13,7 @@ import org.jboss.vfs.VirtualFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,20 +38,16 @@ public class SelfContainedContentRepository implements ContentRepository, Servic
 
     @Override
     public byte[] addContent(InputStream stream) throws IOException {
-        System.err.println( "addContent" );
         return new byte[0];
     }
 
     @Override
     public void addContentReference(ContentReference reference) {
-        System.err.println( "addContentReference: " + reference );
     }
 
     @Override
     public VirtualFile getContent(byte[] hash) {
-        System.err.println( "getContent: " + hash );
         if ( hash.length == 1 && hash[0] == 0 ) {
-            System.err.println( "GETTING CONTENT: " + this.contentInjector.getValue() );
             return this.contentInjector.getValue();
         }
         return null;
@@ -58,27 +55,25 @@ public class SelfContainedContentRepository implements ContentRepository, Servic
 
     @Override
     public boolean hasContent(byte[] hash) {
-        System.err.println( "hasContent: " + hash );
         return false;
     }
 
     @Override
     public boolean syncContent(ContentReference reference) {
-        System.err.println( "syncContent: " + reference );
         return true;
     }
 
     @Override
     public void removeContent(ContentReference reference) {
-        System.err.println( "removeContent: " + reference );
 
     }
 
     @Override
     public Map<String, Set<String>> cleanObsoleteContent() {
-        System.err.println( "cleanObsoleteContent" );
-        return new HashMap<>();
-        //return null;
+        HashMap<String, Set<String>> result = new HashMap<>();
+        result.put( ContentRepository.MARKED_CONTENT, Collections.<String>emptySet());
+        result.put( ContentRepository.DELETED_CONTENT, Collections.<String>emptySet());
+        return result;
     }
 
     @Override

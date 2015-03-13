@@ -28,20 +28,16 @@ public class SelfContainedConfigurationPersister implements ExtensibleConfigurat
         return new ConfigurationPersister.PersistenceResource() {
             @Override
             public void commit() {
-                System.err.println("embedded persist commit");
             }
 
             @Override
             public void rollback() {
-                System.err.println("embedded persist rollback");
             }
         };
     }
 
     @Override
     public void marshallAsXml(ModelNode model, OutputStream output) throws ConfigurationPersistenceException {
-        System.err.println( "marshall as xml: " + model );
-
     }
 
     @Override
@@ -51,34 +47,27 @@ public class SelfContainedConfigurationPersister implements ExtensibleConfigurat
 
     @Override
     public void successfulBoot() throws ConfigurationPersistenceException {
-        System.err.println("successful boot");
-
     }
 
     @Override
     public String snapshot() throws ConfigurationPersistenceException {
-        System.err.println( "snapshot" );
         return null;
     }
 
     @Override
     public SnapshotInfo listSnapshots() {
-        System.err.println( "list snapshots" );
         return null;
     }
 
     @Override
     public void deleteSnapshot(String name) {
-        System.err.println( "delete snapshot: " + name );
     }
 
     @Override
     public void registerSubsystemWriter(String name, XMLElementWriter<SubsystemMarshallingContext> writer) {
-        System.err.println("register subsystem writer: " + name);
     }
 
     @Override
     public void unregisterSubsystemWriter(String name) {
-        System.err.println("unregister subsystem writer: " + name);
     }
 }

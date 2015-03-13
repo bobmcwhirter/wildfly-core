@@ -40,6 +40,7 @@ import org.jboss.modules.ModuleLoader;
 import org.wildfly.security.manager.WildFlySecurityManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -352,8 +353,28 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
             serverBaseDir = new File(WildFlySecurityManager.getPropertyPrivileged("user.dir", "."));
             serverLogDir = new File(WildFlySecurityManager.getPropertyPrivileged("user.dir", "."));
 
-            serverTempDir = new File( homeDir, "tmp" );
-            serverTempDir.mkdirs();
+
+            try {
+                File tmpDir = File.createTempFile( "wildfly-boot", ".d" );
+                if ( tmpDir.exists() ) {
+                    while (!tmpDir.delete()) {
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+                    }
+                }
+                if ( ! tmpDir.exists() ) {
+                    tmpDir.mkdirs();
+                    tmpDir.deleteOnExit();
+                } else {
+
+
+                }
+                serverTempDir = tmpDir;
+            } catch (IOException e) {
+            }
 
             modulesDir = null;
             serverConfigurationDir = null;
@@ -361,6 +382,7 @@ public class ServerEnvironment extends ProcessEnvironment implements Serializabl
             controllerTempDir = null;
             domainBaseDir = null;
             domainConfigurationDir = null;
+            WildFlySecurityManager.setPropertyPrivileged(ServerEnvironment.JBOSS_PERSIST_SERVER_CONFIG, "false");
         } else {
             // Must have HOME_DIR
             homeDir = getFileFromProperty(HOME_DIR, props);

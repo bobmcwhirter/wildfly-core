@@ -16,7 +16,6 @@ public class SelfContainedContentService implements Service<VirtualFile> {
     private final VirtualFile content;
 
     public SelfContainedContentService(VirtualFile content) {
-        System.err.println( "CONTENT IS: " + content + " // " + content.getPathName() );
         this.content = content;
     }
 
